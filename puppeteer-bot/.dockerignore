@@ -1,0 +1,9 @@
+# Docker Files
+Dockerfile
+.dockerignore
+
+# Project Files
+.idea
+node_modules
+config.js.example
+package-lock.json

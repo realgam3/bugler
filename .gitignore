@@ -1,0 +1,23 @@
+# Project Files
+.idea/
+
+# Node.js Files
+node_modules/
+package-lock.json
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtualenv
+venv/
+ENV/
+
+# SSL Files
+*.csr
+ssl/rootCA.*
+ssl/*.txt
+
+# Configuration Files:
+config.js.example

@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  challenge:
+    build: ./challenge
+    expose:
+      - "443"
+    ports:
+      - "443:443"
+    depends_on:
+      - database
+    environment:
+      - SECRET_KEY=ab98b8065fe2ffe1bd75699c4eef308ca19fcddc4a0ad82cc8ace94a324d922d
+    command: [ "gunicorn", "-b", "0.0.0.0:443", "-w", "2", "--certfile", "/app/ssl/mydomain.com.crt", "--keyfile", "/app/ssl/mydomain.com.key", "index:app" ]
+    restart: always
+
+  database:
+    image: mongo:4.2-bionic
+    expose:
+      - 27017
+    depends_on:
+      - queue
+    restart: always
+
+  queue: 
+    image: rabbitmq:3.8-alpine
+    expose:
+      - 5672
+    restart: always
+ 
+  bot:
+    build: ./puppeteer-bot
+    depends_on:
+      - challenge
+    restart: always
+    links:
+      - "queue"
+      - "challenge"
+      - "challenge:bugler.ctf.bsidestlv.com"

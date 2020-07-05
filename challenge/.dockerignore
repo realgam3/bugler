@@ -1,0 +1,20 @@
+# Docker Files
+Dockerfile
+.dockerignore
+
+# SSL Files
+*.csr
+ssl/rootCA.*
+ssl/*.txt
+
+# Project Files
+.idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtualenv
+venv/
+ENV/
