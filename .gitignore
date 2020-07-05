@@ -16,8 +16,8 @@ ENV/
 
 # SSL Files
 *.csr
-ssl/rootCA.*
-ssl/*.txt
+challenge/ssl/rootCA.*
+challenge/ssl/*.txt
 
 # Configuration Files:
 config.js.example
