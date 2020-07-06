@@ -26,6 +26,7 @@ CHALLENGE_URL = os.environ.get("CHALLENGE_URL", "https://bugler.ctf.bsidestlv.co
 app = Flask(__name__, static_folder="public", template_folder="views", static_url_path="/")
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=int(os.environ.get("PERMANENT_SESSION_LIFETIME", 15)))
 app.config['SESSION_COOKIE_SAMESITE'] = "Lax"
+app.config['SESSION_COOKIE_SECURE'] = True
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", os.urandom(16))
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://database:27017/bugler")
 mongo = PyMongo(app)
@@ -78,8 +79,11 @@ def index():
 
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
-    return redirect(url_for("index"))
+    session['user'] = None
+    session.clear()
+    res = redirect(url_for("index"))
+    res.set_cookie("session", expires=0)
+    return res
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -215,7 +219,10 @@ def report(user_id):
             channel.queue_declare(queue='browser')
             channel.basic_publish(exchange='', routing_key='browser', body=json.dumps({
                 "actions": [
-                    # Add Sticky Cookie
+                    {"action": "page.goto", "args": [
+                        urljoin(CHALLENGE_URL, "/"),
+                        {'timeout': 3000, "waitUntil": 'domcontentloaded'}
+                    ]},
                     # Open User URL
                     {"action": "page.goto", "args": [
                         user["website"],
@@ -224,7 +231,7 @@ def report(user_id):
                     # Wait 3 Seconds
                     {"action": "page.waitFor", "args": [3000]},
                     # Close all pages
-                    {"action": "browser.closePages", "args": []},
+                    {"action": "context.closePages", "args": []},
                     # Login
                     {"action": "page.goto", "args": [
                         urljoin(CHALLENGE_URL, "/login"),

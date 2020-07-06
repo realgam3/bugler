@@ -41,23 +41,29 @@ function sleep(time = 1000) {
     });
     await channel.prefetch(1);
     await channel.consume(QUEUE_NAME, async function (msg) {
-        console.debug("\n[x] Received %s", msg.content.toString());
+        console.debug("\n[x] Received: %s", msg.content.toString());
         const data = JSON.parse(msg.content.toString());
 
-        this.browser = await puppeteer.launch(config.browser.options);
-        this.page = await this.browser.newPage();
+        const context = {};
+        context.context = context;
+        context.browser = await puppeteer.launch(config.browser.options);
+        context.page = await context.browser.newPage();
         for (let [event_name, event] of Object.entries(config.page.events)) {
-            this.page.on(event_name, event);
+            context.page.on(event_name, event);
         }
-        await this.page.evaluateOnNewDocument(`(${config.page.evaluate.document_start.toString()})();`);
+        await context.page.evaluateOnNewDocument(`(${config.page.evaluate.document_start.toString()})();`);
 
         // Add close pages function
-        const me = this;
-        this.browser.closePages = async function () {
-            for (let page of await me.browser.pages()) {
+        context.closePages = async function () {
+            for (let page of await context.browser.pages()) {
                 await page.close();
             }
-            me.page = await me.browser.newPage();
+
+            context.page = await context.browser.newPage();
+            for (let [event_name, event] of Object.entries(config.page.events)) {
+                context.page.on(event_name, event);
+            }
+            await context.page.evaluateOnNewDocument(`(${config.page.evaluate.document_start.toString()})();`);
         };
 
         try {
@@ -68,7 +74,7 @@ function sleep(time = 1000) {
                 }
                 console.log(`${action}(${JSON.stringify(args).replace(/(^\[|]$)/g, '')})`);
                 const [objectName, funcName] = action.split('.');
-                const object = this[objectName];
+                const object = context[objectName];
                 const func = object[funcName];
                 if (is_async) {
                     await func.apply(object, args);
@@ -79,7 +85,7 @@ function sleep(time = 1000) {
         } catch (error) {
             console.error(error);
         }
-        await this.browser.close();
+        await context.browser.close();
         return channel.ackAll();
     });
 })();

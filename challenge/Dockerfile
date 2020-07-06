@@ -24,7 +24,7 @@ USER bsidestlv
 ENV HOME /home/bsidestlv
 
 #EXPOSE 443
-#CMD [ "gunicorn", "-b", "0.0.0.0:443", "-w", "2", "--certfile", "/app/ssl/mydomain.com.crt", "--keyfile", "/app/ssl/mydomain.com.key", "index:app" ]
+#CMD [ "gunicorn", "-b", "0.0.0.0:443", "-w", "2", "--certfile", "/app/ssl/server.crt", "--keyfile", "/app/ssl/server.key", "index:app", "--access-logfile", "-" ]
 
 EXPOSE 80
-CMD [ "gunicorn", "-b", "0.0.0.0:80", "-w", "2", "index:app" ]
+CMD [ "gunicorn", "-b", "0.0.0.0:80", "-w", "2", "index:app", "--access-logfile", "-" ]

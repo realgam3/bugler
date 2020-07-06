@@ -2,7 +2,7 @@
 [BSidesTLV CTF 2020] Bugler Challenge
 __________________________________________________
 
-![Challenge Description](res/img/description.png)
+![Challenge Description](resources/img/description.png)
 
 ## Challenge Storyline
 The admin of bugler is not new to Phishing attacks,  

@@ -11,7 +11,7 @@ services:
       - database
     environment:
       - SECRET_KEY=ab98b8065fe2ffe1bd75699c4eef308ca19fcddc4a0ad82cc8ace94a324d922d
-    command: [ "gunicorn", "-b", "0.0.0.0:443", "-w", "2", "--certfile", "/app/ssl/mydomain.com.crt", "--keyfile", "/app/ssl/mydomain.com.key", "index:app" ]
+    command: [ "gunicorn", "-b", "0.0.0.0:443", "-w", "2", "--certfile", "/app/ssl/server.crt", "--keyfile", "/app/ssl/server.key", "index:app", "--access-logfile", "-" ]
     restart: always
 
   database:

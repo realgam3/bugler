@@ -9,7 +9,7 @@ module.exports = {
         "page.waitFor",
         "page.type",
         "page.click",
-        "browser.closePages"
+        "context.closePages"
     ],
     "browser": {
         "options": {
@@ -24,6 +24,7 @@ module.exports = {
     },
     "page": {
         "events": {
+            // "console": message => console.debug(`[${message.type().toUpperCase()}] ${message.text()}`),
             "pageerror": message => console.error(message),
             "error": message => console.error(message),
         },
