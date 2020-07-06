@@ -56,14 +56,14 @@ def login_required(f):
     return decorated_function
 
 
-def non_login_required(f):
-    @functools.wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user") is not None:
-            return redirect(url_for("index"))
-        return f(*args, **kwargs)
-
-    return decorated_function
+# def non_login_required(f):
+#     @functools.wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         if session.get("user") is not None:
+#             return redirect(url_for("index"))
+#         return f(*args, **kwargs)
+#
+#     return decorated_function
 
 
 @app.after_request
@@ -82,12 +82,12 @@ def logout():
     session['user'] = None
     session.clear()
     res = redirect(url_for("index"))
-    res.set_cookie("session", expires=0)
+    # res.set_cookie("session", expires=0)
     return res
 
 
 @app.route('/login', methods=["GET", "POST"])
-@non_login_required
+# @non_login_required
 def login():
     if request.method == "POST":
         user = mongo.db.users.find_one({"username": request.form["username"]})
@@ -112,7 +112,7 @@ def login():
 
 
 @app.route('/register', methods=["GET", "POST"])
-@non_login_required
+# @non_login_required
 def register():
     if request.method == "POST":
         if len(request.form["password"]) < 7:
@@ -253,4 +253,4 @@ def report(user_id):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port="443", ssl_context=("./ssl/mydomain.com.crt", "./ssl/mydomain.com.key"))
+    app.run(host="0.0.0.0", port="443", ssl_context=("ssl/server.crt", "ssl/server.key"), threaded=True)
