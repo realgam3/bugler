@@ -219,10 +219,6 @@ def report(user_id):
             channel.queue_declare(queue='browser')
             channel.basic_publish(exchange='', routing_key='browser', body=json.dumps({
                 "actions": [
-                    {"action": "page.goto", "args": [
-                        urljoin(CHALLENGE_URL, "/"),
-                        {'timeout': 3000, "waitUntil": 'domcontentloaded'}
-                    ]},
                     # Open User URL
                     {"action": "page.goto", "args": [
                         user["website"],
