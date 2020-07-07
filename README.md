@@ -16,7 +16,7 @@ The challenge components are:
 * queue (rabbitmq queue between the bot and the challenge)
 * bot (puppeteer chromium based headless browser with a queue that get messages from the challenge)
 
-### Challenge Scaled Designed
+### Challenge Scaled Design
 * create as much bot instances as you need
 * you can also create more challenge isntances
 * creat network file storage (nfs) and connect it to the challenge instances at /app/public/upload.
