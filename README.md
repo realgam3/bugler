@@ -18,7 +18,7 @@ The challenge components are:
 
 ### Challenge Scaled Design
 * create as much bot instances as you need
-* you can also create more challenge isntances
+* you can also create more challenge instances
 * creat network file storage (nfs) and connect it to the challenge instances at /app/public/upload.
 * create a load balancer and let it balance between the challenge instances. (no sticky cookie needed if you are not duplicating the database, queue and nfs).
 
