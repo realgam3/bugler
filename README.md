@@ -1,4 +1,4 @@
-# bugler
+# Bugler
 [BSidesTLV CTF 2020] Bugler Challenge
 
 ![Challenge Description](resources/img/description.png)
@@ -22,9 +22,16 @@ The challenge components are:
 * creat network file storage (nfs) and connect it to the challenge instances at /app/public/upload.
 * create a load balancer and let it balance between the challenge instances. (no sticky cookie needed if you are not duplicating the database, queue and nfs).
 
+![BSidesTLV CTF 2020 - Challenge Diagram](resources/img/diagram.png)
+
+### Challenge Purpose
+* Teach people that self XSS is could be more dangerous then they thought  
+* Let people experience with Service Workers  
+* Let people experience with login CSRF  
+
 ### Challenge Solution
 1) Deploy the app: docker-compose up --build -d
-2) Its better to add "127.0.0.1 bugler.ctf.bsidestlv.com" to the hosts file
+2) Add "127.0.0.1 bugler.ctf.bsidestlv.com" to the hosts file (add other ip address if its remote)  
 3) Execute solution.py (tested with python3)
    ```bash
    cd solution
@@ -47,4 +54,5 @@ The CSRF attack is possible from the public profile of the user (by clicking on 
 The user will see the response header **"Service-Worker-Allowed: /"** and he will know he must use service workers in order to get the admin access (the admin wasn't login before the attack - short session cookie).    
 With the service workers he will get all the admin traffic and the flag will be in the admin password.  
  
+[![Bugler - Deployment & Solution](http://img.youtube.com/vi/p3EMyP6dguE/0.jpg)](http://www.youtube.com/watch?v=p3EMyP6dguE)
   
