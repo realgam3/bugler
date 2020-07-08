@@ -11,9 +11,9 @@ from datetime import timedelta
 from flask_bcrypt import Bcrypt
 from flask_limiter import Limiter
 from flask_pymongo import PyMongo
-from urllib.parse import urlparse, urljoin
 from pymongo.errors import DuplicateKeyError
 from flask_behind_proxy import FlaskBehindProxy
+from urllib.parse import urlparse, urljoin, unquote_plus
 from flask import Flask, render_template, request, session, flash, jsonify, redirect, url_for
 
 __folder__ = path.abspath(path.dirname(__file__))
@@ -208,7 +208,7 @@ def report(user_id):
     user = mongo.db.users.find_one_or_404({"id": user_id})
     website = urlparse(user.get("website") or "")
     website_protocol = website.scheme
-    website_hostname = website.hostname
+    website_hostname = unquote_plus(website.hostname)
     reported = False
     if website_protocol and website_protocol in ["http", "https"] \
             and website_hostname and urlparse(CHALLENGE_URL).hostname != website_hostname:
